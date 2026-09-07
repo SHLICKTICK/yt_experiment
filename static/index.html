@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>StreamSnap</title>
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json"/>
+<meta name="theme-color" content="#bc0100"/>
+<link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "on-error-container": "#93000a", "on-tertiary": "#ffffff", surface: "#f9f9f9",
+          "on-primary-container": "#fffbff", "tertiary-fixed": "#e4e2e2", "on-secondary": "#ffffff",
+          "on-secondary-container": "#656464", "inverse-surface": "#2f3131", "surface-bright": "#f9f9f9",
+          "surface-container-low": "#f3f3f3", outline: "#956d67", "secondary-fixed": "#e5e2e1",
+          "inverse-on-surface": "#f1f1f1", "on-surface": "#1a1c1c", tertiary: "#5c5c5c",
+          "inverse-primary": "#ffb4a8", "secondary-fixed-dim": "#c8c6c5", "surface-container-high": "#e8e8e8",
+          "surface-dim": "#dadada", "tertiary-fixed-dim": "#c7c6c6", background: "#f9f9f9",
+          "error-container": "#ffdad6", "on-tertiary-fixed-variant": "#464747", error: "#ba1a1a",
+          "on-background": "#1a1c1c", "on-secondary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#930100",
+          "surface-container-lowest": "#ffffff", "on-error": "#ffffff", "primary-fixed": "#ffdad4",
+          primary: "#bc0100", "surface-tint": "#c00100", "primary-container": "#eb0000",
+          "surface-variant": "#e2e2e2", "on-tertiary-container": "#fefcfc", "outline-variant": "#ebbbb4",
+          "tertiary-container": "#757474", "on-primary": "#ffffff", "on-tertiary-fixed": "#1b1c1c",
+          "on-secondary-fixed-variant": "#474646", "secondary-container": "#e5e2e1",
+          "surface-container": "#eeeeee", "primary-fixed-dim": "#ffb4a8", "on-surface-variant": "#603e39",
+          secondary: "#5f5e5e", "surface-container-highest": "#e2e2e2", "on-primary-fixed": "#410000"
+        },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+        spacing: { unit: "4px", gutter: "16px", "margin-desktop": "32px", "container-max": "1200px", "margin-mobile": "16px" },
+        fontFamily: {
+          "headline-lg": ["Inter"], "body-sm": ["Inter"], "body-lg": ["Inter"],
+          "label-caps": ["Inter"], "headline-md": ["Inter"], "headline-lg-mobile": ["Inter"]
+        },
+        fontSize: {
+          "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+          "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+          "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+          "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
+          "headline-md": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+          "headline-lg-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }]
+        }
+      }
+    }
+  };
+</script>
+<style>
+  ::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col pt-[72px] pb-[80px]">
+
+<header class="fixed top-0 w-full z-50 bg-surface shadow-sm flex items-center justify-between px-margin-mobile h-16">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">download_for_offline</span>
+    <h1 class="text-headline-md font-headline-md font-bold text-primary">StreamSnap</h1>
+  </div>
+</header>
+
+<main class="flex-grow flex flex-col items-center px-margin-mobile w-full max-w-[800px] mx-auto space-y-6">
+
+  <!-- URL input -->
+  <section class="w-full mt-6 flex flex-col gap-unit">
+    <label class="sr-only" for="url-input">Video URL</label>
+    <div class="relative w-full shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-[16px] bg-surface-container-lowest flex items-center p-1 border border-secondary-fixed transition-all focus-within:border-secondary focus-within:shadow-[0px_8px_24px_rgba(0,0,0,0.1)]">
+      <span class="material-symbols-outlined text-secondary ml-3 mr-2">link</span>
+      <input class="flex-grow bg-transparent border-none outline-none text-on-surface font-body-lg py-3 px-2 placeholder-secondary rounded-[16px] focus:ring-0" id="url-input" placeholder="Paste media URL here…" type="text" inputmode="url" autocomplete="off"/>
+      <button id="paste-btn" class="bg-surface-container-high hover:bg-surface-dim text-on-surface font-label-caps text-label-caps px-4 py-2 rounded-full mr-1 transition-colors active:scale-95 duration-150 flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">content_paste</span> Paste
+      </button>
+    </div>
+    <p id="error-text" class="hidden text-error font-body-sm text-body-sm px-2"></p>
+  </section>
+
+  <!-- Media card -->
+  <section id="media-section" class="hidden w-full bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col md:flex-row gap-4 relative overflow-hidden border border-surface-variant">
+    <div class="w-full md:w-[240px] aspect-video rounded-lg overflow-hidden relative bg-surface-container flex-shrink-0">
+      <img id="media-thumb" class="w-full h-full object-cover" alt="thumbnail"/>
+      <div id="media-duration" class="absolute bottom-1 right-1 bg-on-background/80 text-on-secondary font-label-caps text-label-caps px-2 py-0.5 rounded"></div>
+    </div>
+    <div class="flex flex-col flex-grow justify-between">
+      <div>
+        <h2 id="media-title" class="font-headline-md text-headline-md text-on-surface line-clamp-2"></h2>
+        <p id="media-meta" class="font-body-sm text-body-sm text-secondary mt-1"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quality selection -->
+  <section id="media-section-2" class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col gap-3 border border-surface-variant">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">movie</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface">Video</h3>
+      </div>
+      <div id="video-options" class="flex flex-col gap-2"></div>
+    </div>
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col gap-3 border border-surface-variant opacity-90 hover:opacity-100 transition-opacity">
+      <div class="flex items-center gap-2 mb-1">
+        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">audiotrack</span>
+        <h3 class="font-headline-md text-headline-md text-secondary">Audio Only</h3>
+      </div>
+      <div id="audio-options" class="flex flex-col gap-2"></div>
+    </div>
+  </section>
+
+  <!-- Primary action -->
+  <section class="w-full mt-auto pt-6 flex flex-col items-center gap-2">
+    <button id="download-btn" class="bg-primary hover:bg-primary-container text-on-primary font-headline-md text-headline-md px-12 py-4 rounded-full shadow-[0px_4px_12px_rgba(255,0,0,0.2)] transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 w-full md:w-auto min-w-[280px] disabled:opacity-60">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">download</span>
+      <span id="download-btn-label">Download Now</span>
+    </button>
+    <p id="status-text" class="font-body-sm text-body-sm text-secondary"></p>
+  </section>
+</main>
+
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-margin-mobile bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50 rounded-t-xl">
+  <button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
+    <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+    <span class="font-label-caps text-label-caps">Home</span>
+  </button>
+  <button class="flex flex-col items-center justify-center text-secondary px-4 py-1 rounded-full">
+    <span class="material-symbols-outlined mb-1">download_done</span>
+    <span class="font-label-caps text-label-caps">Downloads</span>
+  </button>
+  <button class="flex flex-col items-center justify-center text-secondary px-4 py-1 rounded-full">
+    <span class="material-symbols-outlined mb-1">settings</span>
+    <span class="font-label-caps text-label-caps">Settings</span>
+  </button>
+</nav>
+
+<script src="/app.js"></script>
+</body>
+</html>
