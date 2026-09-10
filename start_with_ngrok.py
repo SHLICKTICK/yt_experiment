@@ -21,9 +21,11 @@ import time
 import threading
 from pathlib import Path
 
+
 # Check if pyngrok is installed
 try:
     from pyngrok import ngrok, conf
+    #NGROK_AUTHTOKEN = "3J3WguGAYkA0TR9kVpEhGsPBioy_6t3hVTiUtpWJ43RFFFmaY"
 except ImportError:
     print("❌ pyngrok not installed!")
     print("\nInstall it with:")
@@ -35,6 +37,10 @@ except ImportError:
 # Import the Flask app
 sys.path.insert(0, str(Path(__file__).parent))
 from app import app, DOWNLOAD_DIR
+
+
+ngrok.set_auth_token("3J3WguGAYkA0TR9kVpEhGsPBioy_6t3hVTiUtpWJ43RFFFmaY")
+
 
 def start_flask_app():
     """Start the Flask app in a separate thread."""

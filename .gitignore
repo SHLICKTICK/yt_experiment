@@ -11,6 +11,7 @@ venv/
 .env.local
 .env.*
 
+ngrok.yml
 # Logs and temp files
 *.log
 *.tmp
@@ -19,6 +20,7 @@ venv/
 # Editors
 .vscode/
 .idea/
+downloads/
 
 # Coverage reports
 .coverage

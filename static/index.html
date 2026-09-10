@@ -82,8 +82,8 @@
     <div class="relative w-full shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-[16px] bg-surface-container-lowest flex items-center p-1 border border-secondary-fixed transition-all focus-within:border-secondary focus-within:shadow-[0px_8px_24px_rgba(0,0,0,0.1)]">
       <span class="material-symbols-outlined text-secondary ml-3 mr-2">link</span>
       <input class="flex-grow bg-transparent border-none outline-none text-on-surface font-body-lg py-3 px-2 placeholder-secondary rounded-[16px] focus:ring-0" id="url-input" placeholder="Paste media URL here…" type="text" inputmode="url" autocomplete="off"/>
-      <button id="paste-btn" class="bg-surface-container-high hover:bg-surface-dim text-on-surface font-label-caps text-label-caps px-4 py-2 rounded-full mr-1 transition-colors active:scale-95 duration-150 flex items-center gap-1">
-        <span class="material-symbols-outlined text-[16px]">content_paste</span> Paste
+      <button id="paste-btn" class="bg-surface-container-high hover:bg-surface-dim text-on-surface font-label-caps text-label-caps px-1 py-2 rounded-full mr-1 transition-colors active:scale-95 duration-150 flex items-center gap-1">
+        <span class="material-symbols-outlined text-[16px]">download</span>
       </button>
     </div>
     <p id="error-text" class="hidden text-error font-body-sm text-body-sm px-2"></p>
@@ -130,21 +130,6 @@
     <p id="status-text" class="font-body-sm text-body-sm text-secondary"></p>
   </section>
 </main>
-
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-margin-mobile bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.05)] z-50 rounded-t-xl">
-  <button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1">
-    <span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
-    <span class="font-label-caps text-label-caps">Home</span>
-  </button>
-  <button class="flex flex-col items-center justify-center text-secondary px-4 py-1 rounded-full">
-    <span class="material-symbols-outlined mb-1">download_done</span>
-    <span class="font-label-caps text-label-caps">Downloads</span>
-  </button>
-  <button class="flex flex-col items-center justify-center text-secondary px-4 py-1 rounded-full">
-    <span class="material-symbols-outlined mb-1">settings</span>
-    <span class="font-label-caps text-label-caps">Settings</span>
-  </button>
-</nav>
 
 <script src="/app.js"></script>
 </body>
