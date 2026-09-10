@@ -1,7 +1,3 @@
-# Examples 1:
-(empty — output nothing)
-
-# Example 2 (Project with artifacts):
 # Compiled and build artifacts
 *.pyc
 __pycache__/
@@ -9,35 +5,48 @@ __pycache__/
 *.obj
 dist/
 build/
-target/
+*.class
+*.exe
+*.dll
+*.so
+*.a
+*.out
+
 # Dependencies
 .venv/
 venv/
 node_modules/
 .mypy_cache/
 .pytest_cache/
-downloads/
-ngrok.yml
+target/
+.gradle/
+
 # Logs and temp files
 *.log
 *.tmp
 *.swp
+*.swo
+
 # Environment
 .env
 .env.local
 *.env.*
+
 # Editors
 .vscode/
 .idea/
-# OS
+*.swp
+*.swo
+
+# System
 .DS_Store
 Thumbs.db
+
 # Coverage
 coverage/
 htmlcov/
 .coverage
-# Gradle
-.gradle/
+
 # Compressed files
 *.zip
 *.gz

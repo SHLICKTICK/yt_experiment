@@ -339,8 +339,12 @@
   pasteBtn.addEventListener("click", async () => {
     try {
       const text = await navigator.clipboard.readText();
-      urlInput.value = text.trim();
-      fetchInfo();
+      const trimmed = text.trim();
+      if (trimmed) {
+        urlInput.value = trimmed;
+        clearError();
+        fetchInfo();
+      }
     } catch {
       urlInput.focus();
     }
