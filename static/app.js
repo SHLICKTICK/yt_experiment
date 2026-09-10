@@ -213,13 +213,25 @@
       const a320Available = !!data.qualities["audio320"];
       const a128Available = !!data.qualities["audio128"];
       
-      renderQualityOption(videoOptionsEl, "video_quality", "1080", "1080p MP4", data.qualities["1080"], true, v1080Available);
-      renderQualityOption(videoOptionsEl, "video_quality", "720", "720p MP4", data.qualities["720"], false, v720Available);
-      renderQualityOption(videoOptionsEl, "video_quality", "480", "480p MP4", data.qualities["480"], false, v480Available);
-      renderQualityOption(audioOptionsEl, "audio_quality", "audio320", "MP3 320kbps", data.qualities["audio320"], false, a320Available);
-      renderQualityOption(audioOptionsEl, "audio_quality", "audio128", "MP3 128kbps", data.qualities["audio128"], false, a128Available);
+      // Determine which video quality to check by default (first available)
+      let defaultVideoQuality = "1080";
+      if (!v1080Available) {
+        defaultVideoQuality = v720Available ? "720" : (v480Available ? "480" : "1080");
+      }
       
-      selectedQuality = "1080";
+      // Determine which audio quality to check by default (first available)
+      let defaultAudioQuality = "audio320";
+      if (!a320Available) {
+        defaultAudioQuality = a128Available ? "audio128" : "audio320";
+      }
+      
+      renderQualityOption(videoOptionsEl, "video_quality", "1080", "1080p MP4", data.qualities["1080"], defaultVideoQuality === "1080", v1080Available);
+      renderQualityOption(videoOptionsEl, "video_quality", "720", "720p MP4", data.qualities["720"], defaultVideoQuality === "720", v720Available);
+      renderQualityOption(videoOptionsEl, "video_quality", "480", "480p MP4", data.qualities["480"], defaultVideoQuality === "480", v480Available);
+      renderQualityOption(audioOptionsEl, "audio_quality", "audio320", "MP3 320kbps", data.qualities["audio320"], defaultAudioQuality === "audio320", a320Available);
+      renderQualityOption(audioOptionsEl, "audio_quality", "audio128", "MP3 128kbps", data.qualities["audio128"], defaultAudioQuality === "audio128", a128Available);
+      
+      selectedQuality = defaultVideoQuality;
 
       mediaSection.classList.remove("hidden");
       mediaSection2.classList.remove("hidden");

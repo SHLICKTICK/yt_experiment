@@ -1,69 +1,41 @@
-```gitignore
+# Examples 1:
+(empty — output nothing)
+
+# Example 2 (Project with artifacts):
 # Compiled and build artifacts
 *.pyc
 __pycache__/
-
+*.o
+*.obj
+dist/
+build/
+target/
 # Dependencies
 .venv/
 venv/
 node_modules/
-
+.mypy_cache/
+.pytest_cache/
 # Logs and temp files
 *.log
 *.tmp
 *.swp
-
 # Environment
 .env
 .env.local
 *.env.*
-
 # Editors
 .vscode/
 .idea/
-
-# Coverage reports
-.coverage
-coverage/
-htmlcov/
-
-# Distribution artifacts
-dist/
-build/
-target/
-*.egg-info/
-
-# Cache directories
-.mypy_cache/
-.pytest_cache/
-.coverage
-coverage/
-htmlcov/
-.cov/
-downloads/
-ngrok.yml
-
-# Editors and IDEs
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# System files
+# OS
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
-=======
-# Python specific
-*.pyo
-*.pyd
-.Python
-*.so
-
-
+# Coverage
+coverage/
+htmlcov/
+.coverage
+# Gradle
+.gradle/
 # Compressed files
 *.zip
 *.gz
@@ -87,4 +59,3 @@ Thumbs.db
 *.tar.bz2
 *.tar.xz
 *.tar.zst
-```
