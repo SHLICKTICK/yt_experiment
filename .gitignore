@@ -16,6 +16,8 @@ venv/
 node_modules/
 .mypy_cache/
 .pytest_cache/
+downloads/
+ngrok.yml
 # Logs and temp files
 *.log
 *.tmp
