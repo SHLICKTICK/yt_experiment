@@ -127,10 +127,10 @@
 
   function renderQualityOption(container, name, key, label, size, checked, available = true) {
     const wrapper = document.createElement("label");
-    const isUnavailable = !available && !checked;
+    const isUnavailable = !available;
     
     wrapper.className = `relative ${!isUnavailable ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'}`;
-    wrapper.setAttribute('data-tooltip', !available && !checked ? 'Quality not available for this video' : '');
+    wrapper.setAttribute('data-tooltip', !available ? 'Quality not available for this video' : '');
     wrapper.classList.add('tooltip');
     
     wrapper.innerHTML = `

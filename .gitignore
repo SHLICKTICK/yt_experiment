@@ -2,24 +2,32 @@
 # Compiled and build artifacts
 *.pyc
 __pycache__/
-*.o
-*.obj
-*.class
-*.exe
-*.dll
-*.so
-*.a
-*.out
 
 # Dependencies
-node_modules/
-venv/
 .venv/
+venv/
+node_modules/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
 .env
 .env.local
 *.env.*
 
-# Build directories
+# Editors
+.vscode/
+.idea/
+
+# Coverage reports
+.coverage
+coverage/
+htmlcov/
+
+# Distribution artifacts
 dist/
 build/
 target/
@@ -48,6 +56,13 @@ Thumbs.db
 
 # Logs
 *.log
+=======
+# Python specific
+*.pyo
+*.pyd
+.Python
+*.so
+
 
 # Compressed files
 *.zip
@@ -72,19 +87,4 @@ Thumbs.db
 *.tar.bz2
 *.tar.xz
 *.tar.zst
-
-# Gradle
-.gradle/
-
-# Temporary files
-*.tmp
-*~
-```
-
-Wait, I need to reconsider. The only changes are `static/app.js` and `static/index.html`, which are source files (JavaScript and HTML). There are no build artifacts, dependencies, or temporary files in the change list. According to rule #6, if the change list contains only source or config files and no build artifacts, dependencies, or temp files, I should output an empty .gitignore.
-
-Since only source files (`static/app.js`, `static/index.html`) were modified, no .gitignore rules are needed.
-
-```gitignore
-
 ```
