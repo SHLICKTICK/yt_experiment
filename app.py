@@ -74,12 +74,20 @@ def api_info():
     formats = info.get("formats", [])
 
     def best_size_for_height(max_h):
+        # yt-dlp format selector picks the best video <= max_h
+        # So we need to check if ANY video format exists with height <= max_h
+        # Many videos only have adaptive formats (video-only), so check those too
         candidates = [
             f for f in formats
             if f.get("height") and f["height"] <= max_h and f.get("vcodec") != "none"
         ]
+        
+        # If no candidates found, the video might not have this quality available
+        # This is normal - some videos only have certain resolutions
         if not candidates:
             return None
+        
+        # Get the best (highest) resolution available within the limit
         best = max(candidates, key=lambda f: f.get("height") or 0)
         size = best.get("filesize") or best.get("filesize_approx")
         return human_size(size)
