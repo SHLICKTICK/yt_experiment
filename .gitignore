@@ -32,6 +32,8 @@ target/
 coverage/
 htmlcov/
 .cov/
+downloads/
+ngrok.yml
 
 # Editors and IDEs
 .vscode/

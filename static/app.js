@@ -168,11 +168,11 @@
     if (!url) return;
     
     // Validate URL format
-    const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
-    if (!urlPattern.test(url)) {
-      showError("Please enter a valid URL (e.g., https://youtube.com/watch?v=VIDEO_ID)");
-      return;
-    }
+    // const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/i;
+    // if (!urlPattern.test(url)) {
+    //   showError("Please enter a valid URL (e.g., https://youtube.com/watch?v=VIDEO_ID)");
+    //   return;
+    // }
     
     clearError();
     
