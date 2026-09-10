@@ -54,6 +54,16 @@
           "label-caps": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600" }],
           "headline-md": ["20px", { lineHeight: "28px", fontWeight: "600" }],
           "headline-lg-mobile": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }]
+        },
+        animation: {
+          "spin-slow": "spin 1.5s linear infinite",
+          "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+          "bounce-short": "bounce 0.3s ease-in-out 1"
+        },
+        keyframes: {
+          spin: { to: { transform: "rotate(360deg)" } },
+          pulse: { "0%, 100%": { opacity: "1" }, "50%": { opacity: ".5" } },
+          bounce: { "0%, 100%": { transform: "translateY(-5%)" }, "50%": { transform: "translateY(0)" } }
         }
       }
     }
@@ -63,34 +73,154 @@
   ::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .hidden { display: none !important; }
+  
+  /* Skeleton loading animation */
+  .skeleton {
+    background: linear-gradient(90deg, #e8e8e8 25%, #f0f0f0 50%, #e8e8e8 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+  }
+  .dark .skeleton {
+    background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+    background-size: 200% 100%;
+  }
+  @keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Spinner animation */
+  .spinner {
+    border: 3px solid rgba(188, 1, 0, 0.1);
+    border-top-color: #bc0100;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Touch target minimum size for mobile */
+  .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Tooltip styles */
+  .tooltip {
+    position: relative;
+  }
+  .tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: #1a1c1c;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 100;
+  }
+  .tooltip:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Card hover effects */
+  .card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.12);
+  }
+  
+  /* Progress bar animation */
+  .progress-bar-fill {
+    transition: width 0.3s ease-out;
+  }
+  
+  /* Success notification animation */
+  @keyframes slideIn {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .notification-slide-in {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+  
+  /* Mobile header adjustment */
+  @media (max-width: 640px) {
+    header { height: 56px !important; }
+    body { padding-top: 56px !important; }
+  }
 </style>
 </head>
-<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col pt-[72px] pb-[80px]">
+<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col pt-[72px] pb-[80px] transition-colors duration-300">
 
-<header class="fixed top-0 w-full z-50 bg-surface shadow-sm flex items-center justify-between px-margin-mobile h-16">
+<header class="fixed top-0 w-full z-50 bg-surface shadow-md flex items-center justify-between px-margin-mobile h-16 md:h-20 transition-all duration-300">
   <div class="flex items-center gap-2">
-    <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">download_for_offline</span>
+    <span class="material-symbols-outlined text-primary touch-target" style="font-variation-settings: 'FILL' 1;" aria-label="StreamSnap logo">download_for_offline</span>
     <h1 class="text-headline-md font-headline-md font-bold text-primary">StreamSnap</h1>
   </div>
+  <button id="theme-toggle" class="touch-target tooltip" data-tooltip="Toggle dark mode" aria-label="Toggle dark mode">
+    <span class="material-symbols-outlined text-on-surface hover:text-primary transition-colors" id="theme-icon">dark_mode</span>
+  </button>
 </header>
 
 <main class="flex-grow flex flex-col items-center px-margin-mobile w-full max-w-[800px] mx-auto space-y-6">
 
-  <!-- URL input -->
-  <section class="w-full mt-6 flex flex-col gap-unit">
+  <!-- URL input section with visual separator -->
+  <section class="w-full mt-6 flex flex-col gap-unit relative">
+    <div class="absolute -bottom-4 left-0 w-full h-px bg-surface-container-highest"></div>
     <label class="sr-only" for="url-input">Video URL</label>
-    <div class="relative w-full shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-[16px] bg-surface-container-lowest flex items-center p-1 border border-secondary-fixed transition-all focus-within:border-secondary focus-within:shadow-[0px_8px_24px_rgba(0,0,0,0.1)]">
-      <span class="material-symbols-outlined text-secondary ml-3 mr-2">link</span>
-      <input class="flex-grow bg-transparent border-none outline-none text-on-surface font-body-lg py-3 px-2 placeholder-secondary rounded-[16px] focus:ring-0" id="url-input" placeholder="Paste media URL here…" type="text" inputmode="url" autocomplete="off"/>
-      <button id="paste-btn" class="bg-surface-container-high hover:bg-surface-dim text-on-surface font-label-caps text-label-caps px-1 py-2 rounded-full mr-1 transition-colors active:scale-95 duration-150 flex items-center gap-1">
-        <span class="material-symbols-outlined text-[16px]">download</span>
+    <div class="relative w-full shadow-[0px_4px_12px_rgba(0,0,0,0.05)] rounded-[16px] bg-surface-container-lowest flex items-center p-1 border border-secondary-fixed transition-all focus-within:border-secondary focus-within:shadow-[0px_8px_24px_rgba(0,0,0,0.1)] card-hover">
+      <span class="material-symbols-outlined text-secondary ml-3 mr-2 touch-target" aria-label="URL icon">link</span>
+      <input class="flex-grow bg-transparent border-none outline-none text-on-surface font-body-lg py-3 px-2 placeholder-secondary rounded-[16px] focus:ring-0" id="url-input" placeholder="e.g., https://youtube.com/watch?v=..." type="text" inputmode="url" autocomplete="off" aria-describedby="url-hint error-text"/>
+      <button id="paste-btn" class="touch-target tooltip bg-surface-container-high hover:bg-surface-dim text-on-surface font-label-caps text-label-caps px-3 py-2 rounded-full mr-1 transition-colors active:scale-95 duration-150 flex items-center gap-1" data-tooltip="Paste from clipboard" aria-label="Paste from clipboard">
+        <span class="material-symbols-outlined text-[18px]">content_paste</span>
+        <span class="hidden md:inline font-label-caps">Paste</span>
       </button>
     </div>
-    <p id="error-text" class="hidden text-error font-body-sm text-body-sm px-2"></p>
+    <p id="url-hint" class="font-body-sm text-body-sm text-secondary px-2 hidden">Example: https://youtube.com/watch?v=VIDEO_ID</p>
+    <p id="error-text" class="hidden text-error font-body-sm text-body-sm px-2 py-2 bg-error-container/30 rounded-lg border border-error-container" role="alert"></p>
+    
+    <!-- Loading skeleton for input section -->
+    <div id="input-skeleton" class="hidden w-full rounded-[16px] bg-surface-container-lowest p-4 border border-secondary-fixed">
+      <div class="skeleton h-12 rounded-lg w-full"></div>
+    </div>
+  </section>
+
+  <!-- Loading state for media section -->
+  <section id="loading-section" class="hidden w-full bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col md:flex-row gap-4 relative overflow-hidden border border-surface-variant">
+    <div class="w-full md:w-[240px] aspect-video rounded-lg skeleton flex-shrink-0"></div>
+    <div class="flex flex-col flex-grow justify-between gap-3">
+      <div class="space-y-2">
+        <div class="skeleton h-6 rounded w-3/4"></div>
+        <div class="skeleton h-4 rounded w-1/2"></div>
+      </div>
+      <div class="skeleton h-8 rounded w-full"></div>
+    </div>
   </section>
 
   <!-- Media card -->
-  <section id="media-section" class="hidden w-full bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col md:flex-row gap-4 relative overflow-hidden border border-surface-variant">
+  <section id="media-section" class="hidden w-full bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col md:flex-row gap-4 relative overflow-hidden border border-surface-variant card-hover transition-smooth">
     <div class="w-full md:w-[240px] aspect-video rounded-lg overflow-hidden relative bg-surface-container flex-shrink-0">
       <img id="media-thumb" class="w-full h-full object-cover" alt="thumbnail"/>
       <div id="media-duration" class="absolute bottom-1 right-1 bg-on-background/80 text-on-secondary font-label-caps text-label-caps px-2 py-0.5 rounded"></div>
@@ -103,31 +233,64 @@
     </div>
   </section>
 
+  <!-- Visual separator between input and results -->
+  <div id="results-separator" class="hidden w-full h-px bg-surface-container-highest my-2"></div>
+
   <!-- Quality selection -->
-  <section id="media-section-2" class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col gap-3 border border-surface-variant">
-      <div class="flex items-center gap-2 mb-1">
-        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">movie</span>
-        <h3 class="font-headline-md text-headline-md text-on-surface">Video</h3>
+  <section id="media-section-2" class="hidden w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col gap-3 border border-surface-variant card-hover transition-smooth">
+      <div class="flex items-center gap-2 mb-1 pb-2 border-b border-surface-container">
+        <span class="material-symbols-outlined text-primary touch-target" style="font-variation-settings: 'FILL' 1;" aria-label="Video quality options">movie</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface">Video Quality</h3>
       </div>
-      <div id="video-options" class="flex flex-col gap-2"></div>
+      <div id="video-options" class="flex flex-col gap-2" role="radiogroup" aria-label="Video quality options"></div>
     </div>
-    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col gap-3 border border-surface-variant opacity-90 hover:opacity-100 transition-opacity">
-      <div class="flex items-center gap-2 mb-1">
-        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">audiotrack</span>
-        <h3 class="font-headline-md text-headline-md text-secondary">Audio Only</h3>
+    <div class="bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col gap-3 border border-surface-variant card-hover transition-smooth">
+      <div class="flex items-center gap-2 mb-1 pb-2 border-b border-surface-container">
+        <span class="material-symbols-outlined text-secondary touch-target" style="font-variation-settings: 'FILL' 1;" aria-label="Audio quality options">audiotrack</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface">Audio Quality</h3>
       </div>
-      <div id="audio-options" class="flex flex-col gap-2"></div>
+      <div id="audio-options" class="flex flex-col gap-2" role="radiogroup" aria-label="Audio quality options"></div>
+    </div>
+  </section>
+
+  <!-- Progress bar section (hidden by default) -->
+  <section id="progress-section" class="hidden w-full bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 flex flex-col gap-3 border border-surface-variant">
+    <div class="flex items-center justify-between">
+      <span class="font-label-caps text-label-caps text-on-surface" id="progress-label">Preparing download...</span>
+      <span class="font-body-sm text-body-sm text-secondary" id="progress-percent">0%</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div id="progress-bar" class="h-full bg-primary progress-bar-fill rounded-full" style="width: 0%"></div>
+    </div>
+    <div class="flex items-center justify-between mt-1">
+      <span class="font-body-sm text-body-sm text-secondary" id="progress-speed"></span>
+      <span class="font-body-sm text-body-sm text-secondary" id="progress-eta"></span>
     </div>
   </section>
 
   <!-- Primary action -->
   <section class="w-full mt-auto pt-6 flex flex-col items-center gap-2">
-    <button id="download-btn" class="bg-primary hover:bg-primary-container text-on-primary font-headline-md text-headline-md px-12 py-4 rounded-full shadow-[0px_4px_12px_rgba(255,0,0,0.2)] transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 w-full md:w-auto min-w-[280px] disabled:opacity-60">
-      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">download</span>
+    <button id="download-btn" class="touch-target tooltip bg-primary hover:bg-primary-container text-on-primary font-headline-md text-headline-md px-12 py-4 rounded-full shadow-[0px_4px_12px_rgba(255,0,0,0.2)] transition-all duration-200 active:scale-95 flex items-center justify-center gap-2 w-full md:w-auto min-w-[280px] disabled:opacity-60 disabled:cursor-not-allowed" data-tooltip="Start downloading your selected quality" aria-label="Download media">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;" id="download-icon">download</span>
       <span id="download-btn-label">Download Now</span>
     </button>
-    <p id="status-text" class="font-body-sm text-body-sm text-secondary"></p>
+    <p id="status-text" class="font-body-sm text-body-sm text-secondary" role="status" aria-live="polite"></p>
+  </section>
+  
+  <!-- Success notification (hidden by default) -->
+  <div id="success-notification" class="hidden fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-surface-dim text-on-surface px-6 py-3 rounded-full shadow-lg flex items-center gap-2 notification-slide-in z-50" role="alert" aria-live="assertive">
+    <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+    <span class="font-body-sm text-body-sm" id="success-message">Download started!</span>
+  </div>
+  
+  <!-- Download history section (hidden by default) -->
+  <section id="history-section" class="hidden w-full mt-6 bg-surface-container-lowest rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.05)] p-4 border border-surface-variant">
+    <div class="flex items-center gap-2 mb-3 pb-2 border-b border-surface-container">
+      <span class="material-symbols-outlined text-secondary touch-target" aria-label="Download history">history</span>
+      <h3 class="font-headline-md text-headline-md text-on-surface">Recent Downloads</h3>
+    </div>
+    <div id="history-list" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar"></div>
   </section>
 </main>
 
